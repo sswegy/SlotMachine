@@ -13,7 +13,7 @@ router.get("/id/:id", async (req, res) => {
     const id = req.params.id
     const user = await getUserByID(id)
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send({message: "User not found"})
     }
 
@@ -24,17 +24,17 @@ router.get("/email/:email", async (req, res) => {
     const email = req.params.email
     const user = await getUserByEmail(email)
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send({message: "User not found"})
     }
     res.status(200).send(user)
 })
 
 router.get("/qr_code/", async (req, res) => {
-    const {qr_code} = req.body
+    const { qr_code } = req.body
     const user = await getUserByQRCode(qr_code)
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send({message: "User not found"})
     }
     res.status(200).send(user)
@@ -44,7 +44,7 @@ router.get("/password/:email", async (req, res) => {
     const email = req.params.email
     const password = await getUserPasswordByEmail(email)
 
-    if(!password) {
+    if (!password) {
         return res.status(404).send({message: "Password not found"})
     }
 
@@ -55,7 +55,7 @@ router.get("/balance/:id", async (req, res) => {
     const id = req.params.id
     const balance = await getUserBalanceByID(id)
 
-    if(!balance) {
+    if (!balance) {
         return res.status(404).send({message: "Balance not found"})
     }
 
@@ -65,9 +65,9 @@ router.get("/balance/:id", async (req, res) => {
 // POST USERS
 
 router.post("/register", async (req, res) => {
-    const {first_name, last_name, user_name, email, password} = req.body
+    const { first_name, last_name, user_name, email, password } = req.body
 
-    if(await getUserByEmail(email) || await getUserByUserName(user_name)) {
+    if (await getUserByEmail(email) || await getUserByUserName(user_name)) {
         return res.status(400).send({message: "User exists"})
     }
 
@@ -76,15 +76,15 @@ router.post("/register", async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    const {email, password} = req.body
+    const { email, password } = req.body
     const user = await getUserByEmail(email)
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send({message: "User not found"})
     }
 
     const PASSWORD = await getUserPasswordByEmail(email)
-    if(!password || password != PASSWORD) {
+    if (!password || password != PASSWORD) {
         console.log(PASSWORD)
         return res.status(400).send({message: "Wrong password"})
     }
@@ -95,8 +95,8 @@ router.post("/login", async (req, res) => {
 // PUT USERS
 
 router.put("/change_balance", async (req, res) => {
-    const {id, balance} = req.body
-    if(!await getUserByID(id)) {
+    const { id, balance } = req.body
+    if (!await getUserByID(id)) {
         return res.status(404).send({message: "User not found"})
     }
 
