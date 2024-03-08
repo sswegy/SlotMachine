@@ -1,7 +1,7 @@
 import express from "express"
 import {getGames, getGameByID, getGamesByUserID, createGame } from "../controllers/gamesController.js"
 import { getUserByID } from "../controllers/usersController.js"
-import spin from "../utility/spin.js"
+import spin from "../utility/reelsAndWinManager.js"
 import { createTransaction } from "../controllers/transactionsController.js"
 const router = express.Router()
 
