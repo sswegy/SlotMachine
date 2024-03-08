@@ -30,8 +30,8 @@ router.get("/email/:email", async (req, res) => {
     res.status(200).send(user)
 })
 
-router.get("/qr_code/:qr_code", async (req, res) => {
-    const qr_code = req.params.qr_code
+router.get("/qr_code/", async (req, res) => {
+    const {qr_code} = req.body
     const user = await getUserByQRCode(qr_code)
 
     if(!user) {
