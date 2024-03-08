@@ -49,7 +49,6 @@ router.post("/", async(req, res) => {
     }
 
     await createTransaction(type, user_id, amount)
-    await updateUserBalanceByID(user_id, newBalance)
     res.status(200).send({message: "Transaction successful"})
 })
 

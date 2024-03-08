@@ -56,6 +56,6 @@ export async function createUser(first_name, last_name, user_name, email, passwo
 //PUT USER
 
 export async function updateUserBalanceByID(id, balance) {
-    const result = await pool.query("UPDATE Users SET balance = ? WHERE id = ?", [balance, id])
+    const result = await pool.query("UPDATE users SET balance = ? WHERE id = ?", [balance, id])
     return result
 }
