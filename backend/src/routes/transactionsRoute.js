@@ -1,6 +1,5 @@
 import express from "express"
 import { getTransactions, getTransactionById, getTransactionsByUserID, createTransaction } from "../controllers/transactionsController.js"
-import { getUserByID, updateUserBalanceByID } from "../controllers/usersController.js"
 const router = express.Router()
 
 // GET TRANSACTION
@@ -36,7 +35,7 @@ router.post("/", async(req, res) => {
     var {type, user_id, amount} = req.body
     if(await createTransaction(type, user_id, amount) == null)
         return res.status(400).send({message: "Not enough balance"})
-    
+
     res.status(200).send({message: "Transaction successful"})
 })
 
