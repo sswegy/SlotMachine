@@ -34,21 +34,9 @@ router.get("/user_id/:user_id", async (req, res) => {
 
 router.post("/", async(req, res) => {
     var {type, user_id, amount} = req.body
-    const user = await getUserByID(user_id)
-
-    if(!user) {
-        return res.status(404).send({message: "User not found"})
-    }
-
-    if(type == "withdraw" || type == "game_fee")
-        amount = -amount
-    
-    const newBalance = Number(user.balance) + Number(amount)
-    if(newBalance < 0) {
+    if(await createTransaction(type, user_id, amount) == null)
         return res.status(400).send({message: "Not enough balance"})
-    }
-
-    await createTransaction(type, user_id, amount)
+    
     res.status(200).send({message: "Transaction successful"})
 })
 

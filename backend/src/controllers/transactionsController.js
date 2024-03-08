@@ -30,7 +30,9 @@ export async function createTransaction(type, user_id, amount) {
         amount = -amount
     
     const newBalance = Number(user.balance) + Number(amount)
-    
+    if(newBalance < 0)
+        return null
+
     const result = await pool.query("INSERT INTO transactions (type, user_id, amount) VALUES(?, ?, ?)", [type, user_id, amount])
     await updateUserBalanceByID(user_id, newBalance)
     return result
