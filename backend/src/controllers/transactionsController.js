@@ -22,8 +22,8 @@ export async function getTransactionsByUserID(user_id) {
 
 export async function createTransaction(type, user_id, amount) {
     const user = await getUserByID(user_id)
-    if(!user) {
-        return res.status(404).send({message: "User not found"})
+    if (!user) {
+        return { success: false, message: "User not found" };
     }
 
     if(type == "withdraw" || type == "game_fee")

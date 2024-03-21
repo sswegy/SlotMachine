@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://192.168.174.208:5000'; // vseki put qvno go promenqme v CMD "ipconfig"
+const baseUrl = 'http://192.168.0.12:5000'; // vseki put qvno go promenqme v CMD "ipconfig"
 
 export const fetchUsers = async () => {
     axios.get(`${baseUrl}/users`)
@@ -14,10 +14,8 @@ export const fetchUsers = async () => {
 export const registerUser = async (userData) => {
     try {
         const response = await axios.post(`${baseUrl}/users/register`, userData);
-        console.log('Registration successful:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error.response.data.message, error.message);
         throw new Error(error.response.data.message);
     }
 }
@@ -25,10 +23,17 @@ export const registerUser = async (userData) => {
 export const loginUser = async (userData) => {
     try {
         const response = await axios.post(`${baseUrl}/users/login`, userData);
-        console.log('Login successful:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Login failed:', error.response.data.message, error.message);
+        throw new Error(error.response.data.message);
+    }
+}
+
+export const getUserTransactions = async(userID) => {
+    try {
+        const response = await axios.get(`${baseUrl}/transactions/user_id/${userID}`);
+        return response.data;
+    } catch (error) {
         throw new Error(error.response.data.message);
     }
 }

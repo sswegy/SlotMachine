@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { styles } from '../style';
+import { styles } from '../styles/style';
 import BasicButton from '../basics/button';
 import LinkText from '../basics/linkText';
 import { loginUser } from '../utility/apiRequests';
@@ -18,10 +18,6 @@ export default function Register({ navigation }) {
   };
 
   const handleRegister = async () => {
-    console.log("Login data:")
-    console.log("email: ", email)
-    console.log("password: ", password)
-
     if(email === "" || password === ""){
       setErrorText("Please, fill all the fields!");
       return;
@@ -68,7 +64,7 @@ export default function Register({ navigation }) {
               onChangeText={setPassword}
               keyboardType='default'
             />
-            <TouchableOpacity onPress={toggleSecureEntry} style = {styles.passwordIcon}>
+            <TouchableOpacity onPress={toggleSecureEntry}>
               <Ionicons name={isSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="black" />
             </TouchableOpacity>
           </View>

@@ -29,7 +29,8 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   fullNameBox: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
   },
   halfNameBox: {
     flexDirection: 'column',

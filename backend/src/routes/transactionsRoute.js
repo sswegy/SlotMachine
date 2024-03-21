@@ -14,7 +14,7 @@ router.get("/id/:id", async (req, res) => {
     const transaction = await getTransactionById(id)
 
     if (!transaction) {
-        return res.status(404).send({message: "Transaction not found"})
+        return res.status(404).send({ message: "Transaction not found" })
     }
     res.status(200).send(transaction)
 })
@@ -24,19 +24,25 @@ router.get("/user_id/:user_id", async (req, res) => {
     const transactions = await getTransactionsByUserID(user_id)
 
     if (!transactions) {
-        return res.status(404).send({message: "Transactions not found"})
+        return res.status(404).send({ message: "Transactions not found" })
     }
     res.status(200).send(transactions)
 })
 
 // POST TRANSACTION
 
-router.post("/", async(req, res) => {
+router.post("/", async (req, res) => {
     var { type, user_id, amount } = req.body
-    if (await createTransaction(type, user_id, amount) == null)
-        return res.status(400).send({message: "Not enough balance"})
+    const result = await createTransaction(type, user_id, amount);
 
-    res.status(200).send({message: "Transaction successful"})
+    if (result == null){
+        return res.status(400).send({ message: "Not enough balance" })
+    }
+    if (result.success == false) {
+        return res.status(404).send({ message: result.message });
+    }
+
+    res.status(200).send({ message: "Transaction successful" })
 })
 
 export default router

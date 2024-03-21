@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { styles } from '../style';
+import { styles } from '../styles/style';
 import BasicButton from '../basics/button';
 import LinkText from '../basics/linkText';
 import { registerUser } from '../utility/apiRequests';
@@ -21,13 +21,6 @@ export default function Register({ navigation }) {
   };
 
   const handleRegister = async () => {
-    console.log("Registeration data:")
-    console.log("firstName: ", firstName)
-    console.log("lastName: ", lastName)
-    console.log("userame: ", username)
-    console.log("email: ", email)
-    console.log("password: ", password)
-
     if(firstName === "" || lastName === "" || username === "" || email === "" || password === ""){
       setErrorText("Please, fill all the fields!");
       return;
@@ -68,7 +61,6 @@ export default function Register({ navigation }) {
                 onChangeText={setFirstName}
               />
             </View>
-            <View style={styles.spacingBetweenNames}></View>
             <View style={styles.halfNameBox}>
               <Text style={styles.text}>Last Name:</Text>
               <TextInput
@@ -103,7 +95,7 @@ export default function Register({ navigation }) {
               onChangeText={setPassword}
               keyboardType='default'
             />
-            <TouchableOpacity onPress={toggleSecureEntry} style = {styles.passwordIcon}>
+            <TouchableOpacity onPress={toggleSecureEntry}>
               <Ionicons name={isSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="black" />
             </TouchableOpacity>
           </View>
