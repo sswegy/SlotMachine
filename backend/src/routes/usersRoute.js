@@ -88,7 +88,7 @@ router.post("/login", async (req, res) => {
         console.log(PASSWORD)
         return res.status(400).send({message: "Wrong password"})
     }
-
+    
     res.status(200).send(user)
 })
 

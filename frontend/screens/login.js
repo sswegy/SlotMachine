@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, Image, Button } from 'react-native';
+import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../style';
 import BasicButton from '../basics/button';
 import LinkText from '../basics/linkText';
 import { loginUser } from '../utility/apiRequests';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorText, setErrorText] = useState('');
+  const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
+
+  const toggleSecureEntry = () => {
+    setIsSecureTextEntry(!isSecureTextEntry);
+  };
 
   const handleRegister = async () => {
     console.log("Login data:")
     console.log("email: ", email)
     console.log("password: ", password)
+
+    if(email === "" || password === ""){
+      setErrorText("Please, fill all the fields!");
+      return;
+    }
 
     try {
       const userData = {
@@ -22,9 +34,11 @@ export default function Register({ navigation }) {
       };
       const response = await loginUser(userData);
       console.log('User logged in successfully:', response);
-      navigation.navigate('Home', {response})
+      setErrorText("");
+      navigation.navigate('Home', {response});
     }catch (error) {
-      console.error('Error loging in user:', error);
+      console.error('Error loging in user:', error.message);
+      setErrorText(error.message);
     }
   }
 
@@ -46,14 +60,21 @@ export default function Register({ navigation }) {
           />
 
           <Text style={styles.text}>Password:</Text>
-          <TextInput
-            style = {styles.inputBar}
-            placeholder='*********'
-            secureTextEntry={true}
-            onChangeText={setPassword}
-          />
+          <View style={styles.passwordInputField}>
+            <TextInput
+              style={styles.passwordInputBar}
+              placeholder='*********'
+              secureTextEntry={isSecureTextEntry}
+              onChangeText={setPassword}
+              keyboardType='default'
+            />
+            <TouchableOpacity onPress={toggleSecureEntry} style = {styles.passwordIcon}>
+              <Ionicons name={isSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
 
+        <Text style={styles.errorText}>{errorText}</Text>
         <BasicButton text='Login' onPress={handleRegister} />
         <LinkText textBefore="Don't have an account? " linkedText='Register here' onPress={() => navigation.goBack()} />
       </View>
