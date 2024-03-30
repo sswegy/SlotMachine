@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     qr_code MEDIUMTEXT NOT NULL,
-    balance DECIMAL(10, 2) DEFAULT 0
+    balance DECIMAL(10, 2) DEFAULT 0,
 );
 
 CREATE TABLE IF NOT EXISTS transactions (
@@ -32,3 +32,11 @@ CREATE TABLE IF NOT EXISTS games (
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS connection_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    games_played INT NOT NULL
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user_id
+)
