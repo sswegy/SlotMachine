@@ -13,10 +13,10 @@ export default function BasicButton({ text, onPress }){
 
 const styles = StyleSheet.create({
     BasicButton: {
-        backgroundColor: "maroon",
+        backgroundColor: "#D8B400",
         paddingHorizontal: 50,
         paddingVertical: 8,
-        borderRadius: 4,
+        borderRadius: 10,
     },
     BasicButtonText: {
         color: "white",

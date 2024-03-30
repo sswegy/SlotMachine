@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
-import { styles } from '../styles/style';
-import BasicButton from '../basics/button';
-import LinkText from '../basics/linkText';
-import { registerUser } from '../utility/apiRequests';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import {Text, View, TextInput, Image,TouchableOpacity, ImageBackground} from "react-native";
+import { styles } from "../styles/style";
+import BasicButton from "../basics/button";
+import LinkText from "../basics/linkText";
+import { registerUser } from "../utility/apiRequests";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Register({ navigation }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorText, setErrorText] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorText, setErrorText] = useState("");
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -21,7 +21,13 @@ export default function Register({ navigation }) {
   };
 
   const handleRegister = async () => {
-    if(firstName === "" || lastName === "" || username === "" || email === "" || password === ""){
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      username === "" ||
+      email === "" ||
+      password === ""
+    ) {
       setErrorText("Please, fill all the fields!");
       return;
     }
@@ -32,23 +38,23 @@ export default function Register({ navigation }) {
         last_name: lastName,
         user_name: username,
         email: email,
-        password: password
+        password: password,
       };
       const response = await registerUser(userData);
-      console.log('User registered successfully:', response);
+      console.log("User registered successfully:", response);
       setErrorText("");
-      navigation.navigate('Home', { response })
+      navigation.navigate("Home", { response });
     } catch (error) {
-      console.error('Error registering user:', error.message);
+      console.error("Error registering user:", error.message);
       setErrorText(error.message);
     }
-  }
+  };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground style={styles.container} source={require("../assets/background-image.png")}>
       <View style={styles.registerBox}>
         <Image
-          source={require('../assets/epichno-logo.png')}
+          source={require("../assets/betNONSTOP-logo.png")}
           style={styles.logo}
         />
         <View style={styles.inputBox}>
@@ -57,7 +63,7 @@ export default function Register({ navigation }) {
               <Text style={styles.text}>First Name:</Text>
               <TextInput
                 style={styles.inputBar}
-                placeholder='Ivan'
+                placeholder="Ivan"
                 onChangeText={setFirstName}
               />
             </View>
@@ -65,7 +71,7 @@ export default function Register({ navigation }) {
               <Text style={styles.text}>Last Name:</Text>
               <TextInput
                 style={styles.inputBar}
-                placeholder='Ivanov'
+                placeholder="Ivanov"
                 onChangeText={setLastName}
               />
             </View>
@@ -74,38 +80,46 @@ export default function Register({ navigation }) {
           <Text style={styles.text}>Username:</Text>
           <TextInput
             style={styles.inputBar}
-            placeholder='VankataPower'
+            placeholder="VankataPower"
             onChangeText={setUsername}
           />
 
           <Text style={styles.text}>Email:</Text>
           <TextInput
             style={styles.inputBar}
-            placeholder='ivan.ivanov@gmail.com'
+            placeholder="ivan.ivanov@gmail.com"
             onChangeText={setEmail}
-            keyboardType='email-address'
+            keyboardType="email-address"
           />
 
           <Text style={styles.text}>Password:</Text>
           <View style={styles.passwordInputField}>
             <TextInput
               style={styles.passwordInputBar}
-              placeholder='*********'
+              placeholder="*********"
               secureTextEntry={isSecureTextEntry}
               onChangeText={setPassword}
-              keyboardType='default'
+              keyboardType="default"
             />
             <TouchableOpacity onPress={toggleSecureEntry}>
-              <Ionicons name={isSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="black" />
+              <Ionicons
+                name={isSecureTextEntry ? "eye-off" : "eye"}
+                size={24}
+                color="black"
+              />
             </TouchableOpacity>
           </View>
         </View>
 
         <Text style={styles.errorText}>{errorText}</Text>
-        <BasicButton text='Register' onPress={handleRegister} />
-        <LinkText textBefore='Already have an account? ' linkedText='Login here' onPress={() => navigation.navigate('Login')} />
+        <BasicButton text="Register" onPress={handleRegister} />
+        <LinkText
+          textBefore="Already have an account? "
+          linkedText="Login here"
+          onPress={() => navigation.navigate("Login")}
+        />
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ImageBackground>
   );
 }

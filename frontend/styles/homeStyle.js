@@ -6,6 +6,7 @@ export const homeStyles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingTop: '10%',
+        backgroundColor: 'maroon'
     },
     navBar: {
         flexDirection: 'row',
@@ -22,7 +23,8 @@ export const homeStyles = StyleSheet.create({
         justifyContent: 'flex-end',
         width: 120,
         alignItems: 'center',
-        height: 40
+        height: 40,
+        backgroundColor: "rgba(186, 29, 29, 1)",
     },
     modal: {
         flex: 1,
@@ -51,5 +53,42 @@ export const homeStyles = StyleSheet.create({
         borderBottomWidth: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    nameContainer: {
+        width: "90%",
+        padding: 10,
+        borderWidth: 3,
+        borderRadius: 10,
+    }, 
+    utilityContainer: {
+        borderWidth: 3,
+        borderRadius: 10,
+        padding: 10,
+        width: "90%",
+        marginTop: "5%",
+        height: 500,
+        alignItems: 'center',
+        backgroundColor: "rgba(186, 29, 29, 0.85)",
+    },
+    buttonsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        width: "100%"
+    },
+    selectedButton: {
+        borderBottomWidth: 4,
+        borderColor: "#D8B400",
+        padding: 2
+    },
+    interactiveTables: {
+        width: "100%",
+        borderWidth: 3,
+        flex: 1,
+        marginTop: 15,
+        borderRadius: 10,
+    },
+    logo: {
+        width: "50%",
+        height: 50
     }
 });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { styles } from '../styles/style';
 import BasicButton from '../basics/button';
 import LinkText from '../basics/linkText';
@@ -39,10 +39,10 @@ export default function Register({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ImageBackground style={styles.container} source={require("../assets/background-image.png")}>
       <View style={styles.registerBox}>
         <Image 
-          source={require('../assets/epichno-logo.png')}
+          source={require("../assets/betNONSTOP-logo.png")}
           style = {styles.logo}
         />
 
@@ -75,6 +75,6 @@ export default function Register({ navigation }) {
         <LinkText textBefore="Don't have an account? " linkedText='Register here' onPress={() => navigation.goBack()} />
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ImageBackground>
   );
 }
