@@ -39,6 +39,10 @@ export async function getUserBalanceByID(id) {
     return Number(result.balance)
 }
 
+export async function getLeaderboard() {
+    const [result] = await pool.query("SELECT * FROM users ORDER BY balance DESC LIMIT 10")
+    return [result]
+}
 
 //POST USER
 

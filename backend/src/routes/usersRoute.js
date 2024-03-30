@@ -1,5 +1,5 @@
 import express from "express"
-import {getUsers, getUserByID, getUserByEmail, getUserPasswordByEmail, getUserBalanceByID, getUserByQRCode, createUser, updateUserBalanceByID, getUserByUserName} from "../controllers/usersController.js"
+import {getUsers, getUserByID, getUserByEmail, getUserPasswordByEmail, getUserBalanceByID, getUserByQRCode, createUser, updateUserBalanceByID, getUserByUserName, getLeaderboard} from "../controllers/usersController.js"
 const router = express.Router()
 
 // GET USERS
@@ -60,6 +60,11 @@ router.get("/balance/:id", async (req, res) => {
     }
 
     res.status(200).send(balance)
+})
+
+router.get("/leaderboard", async (req, res) => {
+    const leaderboard = await getLeaderboard()
+    res.status(200).send(leaderboard)
 })
 
 // POST USERS
