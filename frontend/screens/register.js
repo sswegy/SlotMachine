@@ -54,7 +54,7 @@ export default function Register({ navigation }) {
     <ImageBackground style={styles.container} source={require("../assets/background-image.png")}>
       <View style={styles.registerBox}>
         <Image
-          source={require("../assets/betNONSTOP-logo.png")}
+          source={require("../assets/playNonStop.png")}
           style={styles.logo}
         />
         <View style={styles.inputBox}>

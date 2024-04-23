@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   registerBox: {
     width: '86%',
-    backgroundColor: "rgba(186, 9, 9, 0.8)",
+    backgroundColor: "rgba(155, 9, 9, 0.8)",
     padding: 10,
     borderRadius: 10,
     borderWidth: 3,

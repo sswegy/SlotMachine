@@ -44,17 +44,18 @@ router.post("/", async (req, res) => {
         return res.status(400).send({message: "User not found"})
     }
 
-    const newBalance = Number(user.balance) - Number(fee)
+    let newBalance = Number(user.balance) - Number(fee)
     if (newBalance < 0) {
         return res.status(400).send({message: "Not enough balance"})
     }
 
-    const { reels, reward } = await spin(fee)
-    await createGame(reels, fee, reward, user_id)
+    const { reels, win } = await spin(fee)
+    await createGame(reels, fee, win, user_id)
     await createTransaction("game_fee", user_id, fee)
-    await createTransaction("game_reward", user_id, reward)
+    await createTransaction("game_reward", user_id, win)
 
-    res.status(200).send([reels, newBalance + reward])
+    newBalance = newBalance + win
+    res.status(200).send({reels, newBalance})
 })
 
 export default router

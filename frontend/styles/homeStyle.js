@@ -30,12 +30,13 @@ export const homeStyles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: "rgba(100,100,100, 0.25)"
     },
     modalContainer: {
-        borderWidth: 1,
-        borderRadius: 4,
-        backgroundColor: 'white',
+        borderWidth: 4,
+        borderRadius: 20,
+        backgroundColor: 'rgba(186, 29, 29, 1)',
         padding: 5,
         width: '80%',
     },
@@ -90,5 +91,23 @@ export const homeStyles = StyleSheet.create({
     logo: {
         width: "50%",
         height: 50
+    },
+    playerRow: {
+        flexDirection: 'row',
+        height: 60,
+        borderBottomWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+    },
+    currentPlayerRow: {
+        flexDirection: 'row',
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        borderBottomWidth: 1,
+        backgroundColor: 'rgba(10,190,10,0.4)',
+        borderRadius: 6
     }
 });

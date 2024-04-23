@@ -1,24 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  ImageBackground,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, Modal, SafeAreaView, ScrollView, ImageBackground, } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import {
-  AntDesign,
-  Ionicons,
-  MaterialIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons, FontAwesome, } from "@expo/vector-icons";
 import { homeStyles } from "../styles/homeStyle";
-import { getUserTransactions } from "../utility/apiRequests";
+import { getUserTransactions, getLeaderboard } from "../utility/apiRequests";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function Home({ navigation }) {
@@ -43,16 +29,29 @@ export default function Home({ navigation }) {
 
   const [userTransactions, setUserTransactions] = useState([[]]);
   const [selectedButton, setSelectedButton] = useState("leaderboard"); // shte e "leaderboard", "calendar", "games"
+  const [leaderboard, setLeaderboard] = useState("");
+
+  useEffect(() => {
+    getLeaderboardStats();
+  }, []);
 
   const getTransactions = async () => {
     try {
       const response = await getUserTransactions(userData.id);
       setUserTransactions(response);
-      console.log("Transactions:", response);
     } catch (error) {
       console.error("Error getting transactions:", error);
     }
   };
+
+  const getLeaderboardStats = async () => {
+    try {
+      const response = await getLeaderboard();
+      setLeaderboard(response);
+    } catch (error) {
+      console.error("Error getting leaderboard:", error);
+    }
+  }
 
   return (
     <ImageBackground
@@ -106,21 +105,33 @@ export default function Home({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={homeStyles.interactiveTables}>
+          {leaderboard != "" && (
+            <ScrollView>
+              {leaderboard[0].map((item, index) => (
+                <View key={index} style={item.id === userData.id ? homeStyles.currentPlayerRow : homeStyles.playerRow}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 24, fontWeight: "600" }}>{index + 1}. </Text>
+                    <Text style={{ fontSize: 24, fontWeight: "600" }}>{item.user_name}</Text>
+                  </View>
+                  <Text style={{ fontSize: 24, fontWeight: "600" }}>{item.balance}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          )}
         </View>
       </View>
 
-      <Image source={require("../assets/betNONSTOP-logo.png")} style = {homeStyles.logo}/>
+      <Image source={require("../assets/playNonStop.png")} style={homeStyles.logo} />
 
 
       <Modal visible={visibleQR} animationType="slide" onRequestClose={hideQR} transparent>
         <SafeAreaView style={homeStyles.modal}>
           <View style={homeStyles.modalContainer}>
             <TouchableOpacity onPress={hideQR}>
-              <Ionicons
-                name="chevron-back-circle-outline" size={36} color="black"/>
+              <AntDesign name="closecircleo" size={36} color="#D8B400" style={{ paddingBottom: 10 }} />
             </TouchableOpacity>
             <Image
-              style={{ width: "100%", height: 300 }}
+              style={{ width: "100%", height: 300, borderWidth: 3, borderColor: "maroon", borderRadius: 60 }}
               source={{
                 uri: userData.qr_code,
               }}
@@ -133,7 +144,7 @@ export default function Home({ navigation }) {
         <SafeAreaView style={homeStyles.modal}>
           <View style={homeStyles.modalContainer}>
             <TouchableOpacity onPress={hideTransactions}>
-              <Ionicons name="chevron-back-circle-outline" size={36} color="black"/>
+              <Ionicons name="chevron-back-circle-outline" size={36} color="black" />
             </TouchableOpacity>
 
             <ScrollView style={homeStyles.transactionTable}>
