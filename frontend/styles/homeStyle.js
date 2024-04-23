@@ -107,7 +107,7 @@ export const homeStyles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 10,
         borderBottomWidth: 1,
-        backgroundColor: 'rgba(10,190,10,0.4)',
+        backgroundColor: 'rgba(216, 180, 0,0.6)',
         borderRadius: 6
     }
 });

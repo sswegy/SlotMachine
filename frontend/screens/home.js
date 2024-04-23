@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, Image, TouchableOpacity, Modal, SafeAreaView, ScrollView, ImageBackground, } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { AntDesign, Ionicons, MaterialIcons, FontAwesome, } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { homeStyles } from "../styles/homeStyle";
 import { getUserTransactions, getLeaderboard } from "../utility/apiRequests";
 import { LinearGradient } from "expo-linear-gradient";
@@ -69,7 +69,7 @@ export default function Home({ navigation }) {
             showTransactions();
           }}
         >
-          <Text style={{ fontSize: 16 }}>{userData.balance}</Text>
+          <Text style={{ fontSize: 16, fontWeight: "700" }}>{userData.balance}</Text>
           <MaterialIcons name="attach-money" size={16} color="black" />
         </TouchableOpacity>
       </View>
@@ -110,6 +110,14 @@ export default function Home({ navigation }) {
               {leaderboard[0].map((item, index) => (
                 <View key={index} style={item.id === userData.id ? homeStyles.currentPlayerRow : homeStyles.playerRow}>
                   <View style={{ flexDirection: 'row' }}>
+                    {index == 0 && (
+                      <FontAwesome6 name="medal" size={24} color="gold" style={{paddingRight: 5}} />
+                    )}{index == 1 && (
+                      <FontAwesome6 name="medal" size={24} color="silver" style={{paddingRight: 5}}/>
+                    )}
+                    {index == 2 && (
+                      <FontAwesome6 name="medal" size={24} color="#CD7F32" style={{paddingRight: 5}}/>
+                    )}
                     <Text style={{ fontSize: 24, fontWeight: "600" }}>{index + 1}. </Text>
                     <Text style={{ fontSize: 24, fontWeight: "600" }}>{item.user_name}</Text>
                   </View>
