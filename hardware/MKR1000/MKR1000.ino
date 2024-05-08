@@ -5,6 +5,9 @@
 #include "HttpRequestHandler.hpp"
 #include "wiring_private.h"
 
+
+#define AWAIT_UART_MESSAGE(com) while(!com.available());
+
 const char ssid[] = "Glavchev";				// Must be changed on WiFi change
 const char pass[] = "!Obi4amte!";			// Must be changed on WiFi change
 const char server_name[] = "192.168.88.59"; // Must be changed on WiFi change (get from ipconfig - windows)
@@ -36,17 +39,13 @@ void setup()
 
 void loop()
 {
-	String response = hrh.sendPostRequest("/games", "{\"fee\": 10, \"user_id\": 1}");
+	/*
+  String response = hrh.sendPostRequest("/games", "{\"fee\": 10, \"user_id\": 1}");
 	JsonDocument doc;
 	deserializeJson(doc, response);
-
-	Serial.println(response);
-
-	const char *a = doc[0];
-
-	Serial.println(a);
-
-	delay(8000);
+  AWAIT_UART_MESSAGE(com);
+  UARTRecieveMessage();
+  */
 }
 
 void SERCOM3_Handler() // Needed for sercom(UART)

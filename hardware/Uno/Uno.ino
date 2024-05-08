@@ -1,5 +1,8 @@
 #include <SoftwareSerial.h>
 
+
+#define AWAIT_UART_MESSAGE(com) while(!com.available());
+
 SoftwareSerial com(2, 3); // rx, tx
 
 void setup()
