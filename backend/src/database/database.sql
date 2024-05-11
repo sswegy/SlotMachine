@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     qr_code MEDIUMTEXT NOT NULL,
+    hash_code VARCHAR(256) NOT NULL UNIQUE,
     balance DECIMAL(10, 2) DEFAULT 0
 );
 
@@ -29,6 +30,14 @@ CREATE TABLE IF NOT EXISTS games (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     fee DECIMAL(10, 2) NOT NULL,
     reward DECIMAL(10, 2) NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS connections_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    games_played INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

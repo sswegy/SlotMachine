@@ -29,6 +29,11 @@ export async function getUserByQRCode(qr_code) {
     return result[0]
 }
 
+export async function getUserByHashCode(hash_code) {
+    const [result] = await pool.query("SELECT * FROM users WHERE hash_code = ?", [hash_code])
+    return result[0]
+}
+
 export async function getUserPasswordByEmail(email) {
     const result = await getUserByEmail(email)
     return result.password
@@ -39,16 +44,20 @@ export async function getUserBalanceByID(id) {
     return Number(result.balance)
 }
 
+export async function getLeaderboard() {
+    const [result] = await pool.query("SELECT * FROM users ORDER BY balance DESC LIMIT 10")
+    return [result]
+}
 
 //POST USER
 
 export async function createUser(first_name, last_name, user_name, email, password) {
     const credentials = first_name + last_name + user_name + email + password
-    const qr_code = await generateQRCode(credentials)
+    const [qr_code, hash_code] = await generateQRCode(credentials)
 
     const result = await pool.query(
-        "INSERT INTO users (first_name, last_name, user_name, email, password, qr_code) VALUES (?, ?, ?, ?, ?, ?)",
-        [first_name, last_name, user_name, email, password, qr_code]
+        "INSERT INTO users (first_name, last_name, user_name, email, password, qr_code, hash_code) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [first_name, last_name, user_name, email, password, qr_code, hash_code]
     )
     return result
 }
@@ -56,6 +65,6 @@ export async function createUser(first_name, last_name, user_name, email, passwo
 //PUT USER
 
 export async function updateUserBalanceByID(id, balance) {
-    const result = await pool.query("UPDATE Users SET balance = ? WHERE id = ?", [balance, id])
+    const result = await pool.query("UPDATE users SET balance = ? WHERE id = ?", [balance, id])
     return result
 }

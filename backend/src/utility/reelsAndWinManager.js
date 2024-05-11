@@ -41,8 +41,8 @@ export default async function spin(fee) {
     const mt = new MersenneTwister()
     let reels = []
     
-    for (let i = 5; i !== 0; --i)
+    for (let i = Object.keys(symbols).length; i !== 0; --i)
         reels.push(selectSymbol(symbols, mt.random()))
 
-    return [reels, evalWin(reels, symbols, fee)]
+    return { reels: reels, win: evalWin(reels, symbols, fee) }
 }

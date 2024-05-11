@@ -2,8 +2,8 @@ import qr from "qrcode"
 import sha1 from "sha1"
 
 export default async function generateQRCode(credentials) {
-    const hashString = sha1(credentials)
-    const QRCode = await qr.toDataURL(hashString)
+    const hash_code = sha1(credentials)
+    const qr_code = await qr.toDataURL(hash_code)
 
-    return QRCode;
+    return [qr_code, hash_code];
 }
