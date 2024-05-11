@@ -29,6 +29,11 @@ export async function getUserByQRCode(qr_code) {
     return result[0]
 }
 
+export async function getUserByHashCode(hash_code) {
+    const [result] = await pool.query("SELECT * FROM users WHERE hash_code = ?", [hash_code])
+    return result[0]
+}
+
 export async function getUserPasswordByEmail(email) {
     const result = await getUserByEmail(email)
     return result.password
@@ -48,11 +53,11 @@ export async function getLeaderboard() {
 
 export async function createUser(first_name, last_name, user_name, email, password) {
     const credentials = first_name + last_name + user_name + email + password
-    const qr_code = await generateQRCode(credentials)
+    const [qr_code, hash_code] = await generateQRCode(credentials)
 
     const result = await pool.query(
-        "INSERT INTO users (first_name, last_name, user_name, email, password, qr_code) VALUES (?, ?, ?, ?, ?, ?)",
-        [first_name, last_name, user_name, email, password, qr_code]
+        "INSERT INTO users (first_name, last_name, user_name, email, password, qr_code, hash_code) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [first_name, last_name, user_name, email, password, qr_code, hash_code]
     )
     return result
 }
