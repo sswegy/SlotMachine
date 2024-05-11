@@ -6,6 +6,8 @@ HttpRequestHandler::HttpRequestHandler(String server_name, const int port, WiFiC
 	this->client = client;
 }
 
+void HttpRequestHandler::stop() { this->client.stop(); }
+
 String HttpRequestHandler::parseResponse()
 {
 	String response;

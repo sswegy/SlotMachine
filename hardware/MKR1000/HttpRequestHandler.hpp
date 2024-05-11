@@ -18,6 +18,8 @@ class HttpRequestHandler
 public:
 	HttpRequestHandler(String server_name, const int port, WiFiClient client);
 
+  void stop();
+
 	String sendGetRequest(String path, String query);
 	String sendPostRequest(String path, String query);
 };
