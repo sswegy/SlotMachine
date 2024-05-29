@@ -58,7 +58,7 @@ String HttpRequestHandler::sendPostRequest(String path, String query)
 		client.println(String("POST ") + path + String(" HTTP/1.1"));
 		client.println("Host: " + String(this->server_name));
 		client.println("Connection: close");
-		client.println("Content-Type: text/plain");
+		client.println("Content-Type: application/json");
 		client.println("Accept: */*");
 		client.println("Content-Length: " + String(query.length()));
 		client.println();
