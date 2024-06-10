@@ -9,6 +9,7 @@
 #define ARDUINOJSON_ENABLE_ARDUINO_STRING 1
 #define AWAIT_UART_MESSAGE(serial) while (serial.available() <= 0){}
 #define LOGOUT_PIN 6
+#define GAME_PIN 7
 
 const char ssid[] = "#EZ4SSWEGG";           // Must be changed on WiFi change
 const char pass[] = "sswegg_is_ggodd";      // Must be changed on WiFi change
@@ -23,6 +24,7 @@ HttpRequestHandler hrh(server_name, port, client);
 
 bool loggedIn = false;
 String user_name = "";
+int user_id = 0;
 float balance = 0;
 
 void setup()
@@ -33,6 +35,7 @@ void setup()
 	pinPeripheral(0, PIO_SERCOM); // Needed for sercom (tx)
 
   pinMode(LOGOUT_PIN, INPUT);
+  pinMode(GAME_PIN, INPUT_PULLDOWN); // Pin is HIGH by default
 
   u8g2.begin();
   u8g2.setFont(u8g2_font_unifont_tr); 
@@ -57,15 +60,24 @@ void loop()
     u8g2.setCursor(0, 30);  
     loggedIn ? u8g2.print(balance) : 0;
   } while (u8g2.nextPage());
-  Serial.println(digitalRead(LOGOUT_PIN));
   if (loggedIn)
   {
-    if (digitalRead(LOGOUT_PIN) == HIGH)
+    if (digitalRead(LOGOUT_PIN))
     {
       user_name = "";
       balance = 0;
       loggedIn = false;
     }
+    if (digitalRead(GAME_PIN))
+    {
+      String game_request_body = "{\"fee\": 10, \"user_id\": " + String(user_id) + "}";
+      String game_data = hrh.sendPostRequest("/games", game_request_body);
+      Serial.println(game_data);
+      JsonDocument doc;
+      deserializeJson(doc, game_data);
+      balance = doc["newBalance"];
+    }
+
   }
   else
   {
@@ -79,8 +91,10 @@ void loop()
       JsonDocument doc;
       deserializeJson(doc, login_response);
       user_name = doc["user_name"].as<String>();
+      user_id = doc["id"];
       balance = doc["balance"];
       Serial.println(user_name);
+      Serial.println(user_id);
       Serial.println(balance);
       loggedIn = true;
     }
@@ -107,7 +121,7 @@ String UARTReceiveMessage(Stream& serial)
 	return message;
 }
 
-void printWifiConnectionData()
+void printWifiConnectionData() // For debugging
 {
 	Serial.println("----------------------------------------");
 	Serial.println("Board Information:");
