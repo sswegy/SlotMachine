@@ -73,9 +73,18 @@ void loop()
       String game_request_body = "{\"fee\": 10, \"user_id\": " + String(user_id) + "}";
       String game_data = hrh.sendPostRequest("/games", game_request_body);
       Serial.println(game_data);
-      JsonDocument doc;
-      deserializeJson(doc, game_data);
-      balance = doc["newBalance"];
+      /* NOT TESTED
+      String reel_symbols = getReelsArray(game_data);
+      UARTSendMessage(Serial, reel_symbols);
+      AWAIT_UART_MESSAGE(Serial);
+      String game_status = UARTRecieveMessage(Serial);
+      if (game_status.equals("DONE"))
+      {
+        JsonDocument doc;
+        deserializeJson(doc, game_data);
+        balance = doc["newBalance"];
+      }
+      */
     }
 
   }
@@ -101,6 +110,15 @@ void loop()
   }
 }
 
+String getReelsArray(const String& jsonString) 
+{
+  int start = jsonString.indexOf('[');
+  int end = jsonString.indexOf(']');
+  if (start == -1 || end == -1 || start > end)
+    return "";
+  return jsonString.substring(start, end + 1);
+}
+
 void SERCOM3_Handler() // Needed for sercom(UART)
 {
 	com.IrqHandler();
@@ -115,9 +133,7 @@ String UARTReceiveMessage(Stream& serial)
 {
 	String message;
   if (serial.available())
-  {
 	  message = serial.readString();
-  }
 	return message;
 }
 
