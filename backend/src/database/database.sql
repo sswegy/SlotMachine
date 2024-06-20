@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     qr_code MEDIUMTEXT NOT NULL,
+    hash_code VARCHAR(256) NOT NULL UNIQUE,
     balance DECIMAL(10, 2) DEFAULT 0
 );
 

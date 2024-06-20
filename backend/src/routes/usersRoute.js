@@ -1,5 +1,5 @@
 import express from "express"
-import {getUsers, getUserByID, getUserByEmail, getUserPasswordByEmail, getUserBalanceByID, getUserByQRCode, createUser, updateUserBalanceByID, getUserByUserName, getLeaderboard} from "../controllers/usersController.js"
+import {getUsers, getUserByID, getUserByEmail, getUserPasswordByEmail, getUserBalanceByID, getUserByQRCode, createUser, updateUserBalanceByID, getUserByUserName, getLeaderboard, getUserByHashCode} from "../controllers/usersController.js"
 const router = express.Router()
 
 // GET USERS
@@ -33,6 +33,16 @@ router.get("/email/:email", async (req, res) => {
 router.get("/qr_code/", async (req, res) => {
     const { qr_code } = req.body
     const user = await getUserByQRCode(qr_code)
+
+    if (!user) {
+        return res.status(404).send({message: "User not found"})
+    }
+    res.status(200).send(user)
+})
+
+router.get("/hash_code/:hash_code", async (req, res) => {
+    const hash_code = req.params.hash_code
+    const user = await getUserByHashCode(hash_code)
 
     if (!user) {
         return res.status(404).send({message: "User not found"})
