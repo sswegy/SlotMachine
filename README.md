@@ -1,1 +1,1 @@
-# SlotMachine - унҥран
+# SlotMachine - Механична ротативка
