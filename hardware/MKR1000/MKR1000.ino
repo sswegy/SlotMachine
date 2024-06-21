@@ -11,9 +11,9 @@
 #define LOGOUT_PIN 6
 #define GAME_PIN 7
 
-const char ssid[] = "#EZ4SSWEGG";           // Must be changed on WiFi change
-const char pass[] = "sswegg_is_ggodd";      // Must be changed on WiFi change
-const char server_name[] = "192.168.88.18"; // Must be changed on WiFi change (get from ipconfig - windows)
+const char ssid[] = "TUES";           // Must be changed on WiFi change
+const char pass[] = "elsys-bg.org";      // Must be changed on WiFi change
+const char server_name[] = "192.168.1.111"; // Must be changed on WiFi change 
 const int port = 5000;                      // Must be exposed
 int status = WL_IDLE_STATUS;
 
@@ -42,13 +42,10 @@ void setup()
 
 	while (status != WL_CONNECTED)
 	{
-		Serial.print("Attempting to connect to network: ");
-		Serial.println(ssid);
 		status = WiFi.begin(ssid, pass);
 		delay(1000);
 	}
-	Serial.println("\n\nConnected to the network");
-	printWifiConnectionData();
+	// printWifiConnectionData();
 }
 
 void loop()
@@ -72,10 +69,17 @@ void loop()
     {
       String game_request_body = "{\"fee\": 10, \"user_id\": " + String(user_id) + "}";
       String game_data = hrh.sendPostRequest("/games", game_request_body);
-      Serial.println(game_data);
-      JsonDocument doc;
-      deserializeJson(doc, game_data);
-      balance = doc["newBalance"];
+      String reel_symbols = getReelsArray(game_data);
+      
+      UARTSendMessage(Serial, reel_symbols);
+      AWAIT_UART_MESSAGE(Serial);
+      String game_status = UARTReceiveMessage(Serial);
+      if (game_status.equals("DONE"))
+      {
+        JsonDocument doc;
+        deserializeJson(doc, game_data);
+        balance = doc["newBalance"];
+      }
     }
 
   }
@@ -83,9 +87,7 @@ void loop()
   {
     AWAIT_UART_MESSAGE(com);
     String hash_code = UARTReceiveMessage(com);
-    Serial.println(hash_code);
     String login_response = hrh.sendGetRequest("/users/hash_code/", hash_code);
-    Serial.println(login_response);
     if (!login_response.equals("{\"message\":\"User not found\"}"))
     {
       JsonDocument doc;
@@ -93,12 +95,18 @@ void loop()
       user_name = doc["user_name"].as<String>();
       user_id = doc["id"];
       balance = doc["balance"];
-      Serial.println(user_name);
-      Serial.println(user_id);
-      Serial.println(balance);
       loggedIn = true;
     }
   }
+}
+
+String getReelsArray(const String& jsonString) 
+{
+  int start = jsonString.indexOf('[');
+  int end = jsonString.indexOf(']');
+  if (start == -1 || end == -1 || start > end)
+    return "";
+  return jsonString.substring(start, end + 1);
 }
 
 void SERCOM3_Handler() // Needed for sercom(UART)
@@ -115,9 +123,7 @@ String UARTReceiveMessage(Stream& serial)
 {
 	String message;
   if (serial.available())
-  {
 	  message = serial.readString();
-  }
 	return message;
 }
 
