@@ -27,6 +27,8 @@ AccelStepper r1(AccelStepper::DRIVER, 2, 3),
 
 void setup()
 {
+    Serial.begin(9600);
+
     r1.setMaxSpeed(1000);
     r1.setAcceleration(500);
     r2.setMaxSpeed(1000);
@@ -37,26 +39,27 @@ void setup()
     r4.setAcceleration(500);
     r5.setMaxSpeed(1000);
     r5.setAcceleration(500);
-
-    Serial.begin(9600);
 }
 
 void loop()
 {
     AWAIT_UART_MESSAGE(Serial);
-    String reelPositionString = UARTRecieveMessage;
-    parseMessage(reelPositionString);
-    spinReel(r1, reelPositions[0], REEL_SENSOR_PIN1);
-    delay(1500);
-    spinReel(r2, reelPositions[1], REEL_SENSOR_PIN2);
-    delay(1500);
-    spinReel(r3, reelPositions[2], REEL_SENSOR_PIN3);
-    delay(1500);
-    spinReel(r4, reelPositions[3], REEL_SENSOR_PIN4);
-    delay(1500);
-    spinReel(r5, reelPositions[4], REEL_SENSOR_PIN5);
-    delay(500);
-    UARTSendMessage(Serial, "DONE");
+    String reelPositionString = UARTReceiveMessage(Serial);
+    if (reelPositionString.startsWith("["))
+    {
+      parseMessage(reelPositionString);
+      spinReel(r1, symbolPositions[reelPositions[0] - 1], REEL_SENSOR_PIN1);
+      delay(1500);
+      spinReel(r2, symbolPositions[reelPositions[1] - 1], REEL_SENSOR_PIN2);
+      delay(1500);
+      spinReel(r3, symbolPositions[reelPositions[2] - 1], REEL_SENSOR_PIN3);
+      delay(1500);
+      spinReel(r4, symbolPositions[reelPositions[3] - 1], REEL_SENSOR_PIN4);
+      delay(1500);
+      spinReel(r5, symbolPositions[reelPositions[4] - 1], REEL_SENSOR_PIN5);
+      delay(500);
+      UARTSendMessage(Serial, "DONE");
+    }
 }
 
 void spinReel(AccelStepper& reel, int symbol, int sensorPin)

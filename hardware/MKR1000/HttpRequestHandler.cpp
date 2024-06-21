@@ -38,7 +38,6 @@ String HttpRequestHandler::sendGetRequest(String path, String query)
 {
 	if (client.connect(this->server_name.c_str(), this->port))
 	{
-		Serial.println("Connected to server.");
 		client.println(String("GET ") + path + query + String(" HTTP/1.1"));
 		client.println("Host: " + String(server_name));
 		client.println("Connection: close");
@@ -54,7 +53,6 @@ String HttpRequestHandler::sendPostRequest(String path, String query)
 {
 	if (client.connect(this->server_name.c_str(), this->port))
 	{
-		Serial.println("Connected to server.");
 		client.println(String("POST ") + path + String(" HTTP/1.1"));
 		client.println("Host: " + String(this->server_name));
 		client.println("Connection: close");
